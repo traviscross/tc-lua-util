@@ -153,11 +153,18 @@ end
 -- trees
 
 tree={}
+local leaf="__leaf"
 function tree.get(tr,k)
   if not tr or not k or #k < 1 then
     return nil
   elseif #k == 1 then
-    return tr[k[1]], tr
+    local node=tr[k[1]]
+    if not node then
+      return nil,nil,tr
+    end
+    local rem=table.copy(node)
+    rem[leaf]=nil
+    return node[leaf],rem,tr
   else
     local _, ys = table.splice(k,2)
     return tree.get(tr[k[1]], ys)
@@ -169,7 +176,7 @@ function tree.set(tr,k,v)
   if not k or #k < 1 then
     return nil
   elseif #k == 1 then
-    tr[k[1]]=v
+    tr[k[1]]=table.nmerge(tr[k[1]] or {},{[leaf]=v})
   else
     local _, ys = table.splice(k,2)
     tr[k[1]]=tree.set(tr[k[1]],ys,v)
