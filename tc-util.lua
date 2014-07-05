@@ -60,6 +60,27 @@ function string.split(str,sep)
   return acc
 end
 
+function string.equal(str,...)
+  local z=str
+  for _,v in pairs({...}) do
+    if z ~= v then return false end
+  end
+  return true
+end
+
+function string.shared_prefix(...)
+  local xs={...} ys=""
+  local lens=table.map(xs,function(_,x) return #x end)
+  local len=math.min(table.unpack(lens))
+  for i=1,len do
+    local cs=table.map(xs,function(_,x) return x:ref(i) end)
+    if string.equal(table.unpack(cs)) then
+      ys=ys..cs[1]
+    else break end
+  end
+  return ys
+end
+
 -- tables
 
 function table.join(table,sep)
