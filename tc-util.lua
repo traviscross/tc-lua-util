@@ -156,7 +156,7 @@ tree={}
 local leaf="__leaf"
 function tree.get(tr,k)
   if not tr or not k or #k < 1 then
-    return nil
+    return nil,nil,tr
   elseif #k == 1 then
     local node=tr[k[1]]
     if not node then
