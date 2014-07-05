@@ -183,12 +183,7 @@ end
 
 local shortest_table
 function shortest_table(xs)
-  return table.fold(
-    table.map(xs,function(_,v) return #v end),
-    function(z,_,v)
-      if not z then return v
-      elseif v>z then return v
-      else return z end end)
+  return math.min(table.unpack(table.map(xs,function(_,v) return #v end)))
 end
 
 function map(fn,...)
