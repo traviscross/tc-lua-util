@@ -116,6 +116,14 @@ function table.rem(xs,pos)
   return ys, y
 end
 
+function table.seq(xs)
+  local ys={}
+  for i=1,#xs do
+    table.insert(ys,xs[i])
+  end
+  return ys
+end
+
 function table.splice(xs,pos)
   local ys={} zs={} i=1
   for _,v in pairs(xs) do
