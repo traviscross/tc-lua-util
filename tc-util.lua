@@ -124,6 +124,14 @@ function table.seq(xs)
   return ys
 end
 
+function table.reverse(xs)
+  local ys={}
+  for i=#xs,1,-1 do
+    table.insert(ys,xs[i])
+  end
+  return ys
+end
+
 function table.splice(xs,pos)
   local ys={} zs={} i=1
   for _,v in pairs(xs) do
@@ -156,6 +164,69 @@ function table.size(xs)
     i=i+1
   end
   return i
+end
+
+function table.map(xs,fn)
+  local ys={}
+  for k,v in pairs(xs) do
+    ys[k]=fn(k,v)
+  end
+  return ys
+end
+
+function table.fold(xs,fn,z)
+  for k,v in pairs(xs) do
+    z=fn(z,k,v)
+  end
+  return z
+end
+
+local shortest_table
+function shortest_table(xs)
+  return table.fold(
+    table.map(xs,function(_,v) return #v end),
+    function(z,_,v)
+      if not z then return v
+      elseif v>z then return v
+      else return z end end)
+end
+
+function map(fn,...)
+  local xs={...} ys={}
+  local l=shortest_table(xs)
+  for i=1,l do
+    local cur=table.map(xs,function(_,v) return v[i] end)
+    table.insert(ys,fn(table.unpack(cur)))
+  end
+  return ys
+end
+
+function foldl(fn,z,...)
+  local xs={...}
+  local l=shortest_table(xs)
+  for i=1,l do
+    local cur=table.map(xs,function(_,v) return v[i] end)
+    z=fn(z,table.unpack(cur))
+  end
+  return z
+end
+
+function foldl1(fn,xs)
+  local z=xs[1]
+  for i=2,#xs do
+    z=fn(z,xs[i])
+  end
+  return z
+end
+
+function foldr(fn,z,...)
+  local xs=map(table.reverse,{...})
+  return foldl(fn,z,table.unpack(xs))
+end
+
+function foldr1(fn,xs)
+  local xs=table.reverse(xs)
+  return foldl1(fn,xs)
 end
 
 if not table.unpack then
