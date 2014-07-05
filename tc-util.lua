@@ -150,6 +150,10 @@ function table.size(xs)
   return i
 end
 
+if not table.unpack then
+  table.unpack=unpack
+end
+
 -- trees
 
 tree={}
