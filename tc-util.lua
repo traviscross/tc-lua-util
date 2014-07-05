@@ -142,6 +142,14 @@ function table.values(xs)
   return table.append(xs)
 end
 
+function table.size(xs)
+  local i=0
+  for _,_ in pairs(xs) do
+    i=i+1
+  end
+  return i
+end
+
 -- trees
 
 tree={}
@@ -177,4 +185,63 @@ function tree.merge_table(tr,xs)
 end
 function tree.from_table(xs)
   return tree.merge_table({},xs)
+end
+
+-- printer
+
+local lua_from_hash
+local lua_from_list
+function lua_from(x)
+  local k=type(x)
+  if k == "string" then return "\""..x.."\""
+  elseif k == "table" then
+    if table.size(x) == #x then
+      return lua_from_list(x)
+    else
+      return lua_from_hash(x)
+    end
+  elseif k == "number" then
+    return tostring(x)
+  elseif k == "nil" then
+    return "nil"
+  else
+    return tostring(x)
+  end
+end
+
+local ulua_from_list
+function ulua_from_list(l)
+  if not l then return "" end
+  local m
+  for _,v in pairs(l) do
+    if m then m=m..", " else m="" end
+    m=m..lua_from(v)
+  end
+  return m or ""
+end
+function lua_from_list(l)
+  return "{"..ulua_from_list(l).."}"
+end
+
+local ulua_from_hash
+function ulua_from_hash(tab)
+  if not tab then return "" end
+  local m
+  for k,v in pairs(tab) do
+    if m then m=m..", " else m="" end
+    local ks
+    if type(k) == "string" then
+      ks=k
+      if k:match("[^a-zA-Z0-9_]") then
+        ks="[\""..k.."\"]"
+      end
+    else
+      ks="["..lua_from(k).."]"
+    end
+    m=m..ks.."="..lua_from(v)
+  end
+  return m or ""
+end
+function lua_from_hash(tab)
+  return "{"..ulua_from_hash(tab).."}"
 end
