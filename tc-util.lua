@@ -227,6 +227,13 @@ function foldl(fn,z,...)
   return z
 end
 
+function foldlf(fn,z,xs)
+  for i=1,#xs do
+    z=fn(z,xs[i])
+  end
+  return z
+end
+
 function foldl1(fn,xs)
   local z=xs[1]
   for i=2,#xs do
@@ -238,6 +245,11 @@ end
 function foldr(fn,z,...)
   local xs=map(table.reverse,{...})
   return foldl(fn,z,table.unpack(xs))
+end
+
+function foldrf(fn,z,xs)
+  local xs=table.reverse(xs)
+  return foldlf(fn,z,xs)
 end
 
 function foldr1(fn,xs)
