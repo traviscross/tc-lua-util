@@ -39,8 +39,8 @@ end
 function string.intersperse(str,fence)
   local acc
   for i=0,#str-1 do
-    if not acc then acc=str:zref(i)
-    else acc=acc..fence..str:zref(i) end
+    if not acc then acc=string.zref(str,i)
+    else acc=acc..fence..string.zref(str,i) end
   end
   return acc
 end
@@ -48,15 +48,15 @@ end
 function string.split(str,sep)
   local acc={} i=0 last=0
   while i<#str do
-    if sep==str:zsub(i,i+#sep) then
-      table.insert(acc,str:zsub(last,i))
+    if sep==string.zsub(str,i,i+#sep) then
+      table.insert(acc,string.zsub(str,last,i))
       i=i+#sep
       last=i
     else
       i=i+1
     end
   end
-  table.insert(acc,str:zsub(last))
+  table.insert(acc,string.zsub(str,last))
   return acc
 end
 
@@ -73,7 +73,7 @@ function string.shared_prefix(...)
   local lens=table.map(xs,function(_,x) return #x end)
   local len=math.min(table.unpack(lens))
   for i=1,len do
-    local cs=table.map(xs,function(_,x) return x:ref(i) end)
+    local cs=table.map(xs,function(_,x) return string.ref(x,i) end)
     if string.equal(table.unpack(cs)) then
       ys=ys..cs[1]
     else break end
@@ -391,7 +391,7 @@ function ulua_from_hash(tab)
     local ks
     if type(k) == "string" then
       ks=k
-      if k:match("[^a-zA-Z0-9_]") then
+      if string.match(k,"[^a-zA-Z0-9_]") then
         ks="[\""..k.."\"]"
       end
     else
