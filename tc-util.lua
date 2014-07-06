@@ -249,6 +249,37 @@ if not table.unpack then
   table.unpack=unpack
 end
 
+-- functions
+
+function curryl(f,...)
+  local xs={...}
+  return function(...)
+    return f(table.unpack(table.append(xs,{...}))) end
+end
+
+function curryr(f,...)
+  local xs={...}
+  return function(...)
+    return f(table.unpack(table.append({...},xs))) end
+end
+
+local compl2
+function compl2(f,g)
+  return function(...)
+    return f(g(...))
+  end
+end
+
+function compl(...)
+  local xs={...}
+  return foldl1(compl2,{...})
+end
+
+function compr(...)
+  local xs={...}
+  return foldr1(compl2,{...})
+end
+
 -- trees
 
 tree={}
