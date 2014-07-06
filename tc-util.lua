@@ -45,6 +45,14 @@ function string.intersperse(str,fence)
   return acc
 end
 
+function string.explode(str)
+  local xs={}
+  for i=1,#str do
+    table.insert(xs,string.ref(str,i))
+  end
+  return xs
+end
+
 function string.split(str,sep)
   local acc={} i=0 last=0
   while i<#str do
