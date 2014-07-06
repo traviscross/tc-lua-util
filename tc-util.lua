@@ -81,6 +81,16 @@ function string.shared_prefix(...)
   return ys
 end
 
+function string.prefix_match(str,...)
+  local x=foldlf(
+    function(z,v)
+      local len=#string.shared_prefix(str,v)
+      if len > z.len then return {v=v,len=len} else return z end
+    end, {len=0}, {...})
+  if x.v then return x.v end
+  return nil
+end
+
 -- tables
 
 function table.join(table,sep)
