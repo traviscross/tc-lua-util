@@ -186,6 +186,11 @@ function table.reverse(xs)
   return ys
 end
 
+function table.nsort(xs,comp)
+  table.sort(xs,comp)
+  return xs
+end
+
 function table.splice(xs,pos)
   local ys={} zs={} i=1
   for _,v in pairs(xs) do
