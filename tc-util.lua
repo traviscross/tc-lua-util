@@ -76,6 +76,21 @@ function string.equal(str,...)
   return true
 end
 
+function string.cmp(a,b)
+  for i=1,math.min(#a,#b) do
+    local ab=string.byte(a,i,i)
+    local bb=string.byte(b,i,i)
+    if ab < bb then return -1
+    elseif ab > bb then return 1 end
+  end
+  if #a == #b then return 0
+  elseif #a < #b then return -1
+  else return 1 end
+end
+
+function string.lt2(a,b) return string.cmp(a,b) == -1 end
+function string.gt2(a,b) return string.cmp(a,b) == 1 end
+
 function string.shared_prefix(...)
   local xs={...} ys=""
   local lens=table.map(xs,function(_,x) return #x end)
