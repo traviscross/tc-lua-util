@@ -194,7 +194,7 @@ end
 function table.splice(xs,pos)
   local ys,zs,i={},{}
   for i,v in ipairs(xs) do
-    if i<pos then
+    if i<=pos then
       table.insert(ys,v)
     else
       table.insert(zs,v)
@@ -345,7 +345,7 @@ function tree.get(tr,k)
     rem[leaf]=nil
     return node[leaf],rem,tr
   else
-    local _, ys = table.splice(k,2)
+    local _, ys = table.splice(k,1)
     return tree.get(tr[k[1]], ys)
   end
 end
@@ -357,7 +357,7 @@ function tree.set(tr,k,v)
   elseif #k == 1 then
     tr[k[1]]=table.nmerge(tr[k[1]] or {},{[leaf]=v})
   else
-    local _, ys = table.splice(k,2)
+    local _, ys = table.splice(k,1)
     tr[k[1]]=tree.set(tr[k[1]],ys,v)
   end
   return tr
