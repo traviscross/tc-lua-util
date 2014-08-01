@@ -54,7 +54,7 @@ function string.explode(str)
 end
 
 function string.split(str,sep)
-  local acc={} i=0 last=0
+  local acc,i,last={},0,0
   while i<#str do
     if sep==string.zsub(str,i,i+#sep) then
       table.insert(acc,string.zsub(str,last,i))
@@ -92,7 +92,7 @@ function string.lt2(a,b) return string.cmp(a,b) == -1 end
 function string.gt2(a,b) return string.cmp(a,b) == 1 end
 
 function string.shared_prefix(...)
-  local xs={...} ys=""
+  local xs,ys={...},""
   local lens=table.map(xs,function(_,x) return #x end)
   local len=math.min(table.unpack(lens))
   for i=1,len do
@@ -192,7 +192,7 @@ function table.nsort(xs,comp)
 end
 
 function table.splice(xs,pos)
-  local ys={} zs={} i=1
+  local ys,zs,i={},{},1
   for _,v in pairs(xs) do
     if i<pos then
       table.insert(ys,v)
@@ -246,7 +246,7 @@ function shortest_table(xs)
 end
 
 function map(fn,...)
-  local xs={...} ys={}
+  local xs,ys={...},{}
   local l=shortest_table(xs)
   for i=1,l do
     local cur=table.map(xs,function(_,v) return v[i] end)
