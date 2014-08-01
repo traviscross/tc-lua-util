@@ -192,14 +192,13 @@ function table.nsort(xs,comp)
 end
 
 function table.splice(xs,pos)
-  local ys,zs,i={},{},1
-  for _,v in pairs(xs) do
+  local ys,zs,i={},{}
+  for i,v in ipairs(xs) do
     if i<pos then
       table.insert(ys,v)
     else
       table.insert(zs,v)
     end
-    i=i+1
   end
   return ys, zs
 end
