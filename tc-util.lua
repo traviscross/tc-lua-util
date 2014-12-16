@@ -116,16 +116,13 @@ end
 
 -- tables
 
-function table.join(table,sep)
-  local acc=""
-  for _,v in pairs(table) do
-    if acc=="" then
-      acc=v
-    else
-      acc=acc..sep..v
-    end
+function table.join(xs,sep)
+  local s=nil
+  for _,v in pairs(xs) do
+    if s then s=s..sep else s="" end
+    s=s..v
   end
-  return acc
+  return s
 end
 
 function table.kvjoin(xs,kvsep,rsep)
