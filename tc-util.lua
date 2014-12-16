@@ -128,6 +128,15 @@ function table.join(table,sep)
   return acc
 end
 
+function table.kvjoin(xs,kvsep,rsep)
+  local s=nil
+  for k,v in pairs(xs) do
+    if s then s=s..rsep else s="" end
+    s=s..k..kvsep..v
+  end
+  return s
+end
+
 function table.nmerge(xs,...)
   for _,ys in pairs({...}) do
     for k,v in pairs(ys) do
