@@ -192,8 +192,13 @@ function table.reverse(xs)
   return ys
 end
 
-function table.nsort(xs,comp)
-  table.sort(xs,comp)
+function table.nsort(xs,comp,key)
+  local comp_
+  if not key then comp_=comp
+  elseif not comp then comp_=function(a,b) return key(a)<key(b) end
+  else comp_=function(a,b) return comp(key(a),key(b)) end
+  end
+  table.sort(xs,comp_)
   return xs
 end
 
