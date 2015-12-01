@@ -243,6 +243,16 @@ function table.map(xs,fn)
   return ys
 end
 
+function table.filter(xs,fn)
+  local ys={}
+  for k,v in pairs(xs) do
+    if fn(k,v) then
+      ys[k]=v
+    end
+  end
+  return ys
+end
+
 function table.fold(xs,fn,z)
   for k,v in pairs(xs) do
     z=fn(z,k,v)
@@ -263,6 +273,19 @@ function map(fn,...)
     table.insert(ys,fn(table.unpack(cur)))
   end
   return ys
+end
+
+function filter(fn,...)
+  local xs,ys={...},{}
+  for i,x in ipairs(xs) do
+    ys[i]={}
+    for j,v in ipairs(x) do
+      if fn(v) then
+        table.insert(ys[i],v)
+      end
+    end
+  end
+  return table.unpack(ys)
 end
 
 function foldl(fn,z,...)
