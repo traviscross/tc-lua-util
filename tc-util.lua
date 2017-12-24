@@ -109,7 +109,7 @@ function string.prefix_match(str,...)
     function(z,v)
       local len=#string.shared_prefix(str,v)
       if len > z.len then return {v=v,len=len} else return z end
-    end, {len=0}, {...})
+    end,{len=0},{...})
   if x.v then return x.v end
   return nil
 end
@@ -173,7 +173,7 @@ end
 function table.rem(xs,pos)
   local ys=table.copy(xs)
   local y=table.remove(ys,pos)
-  return ys, y
+  return ys,y
 end
 
 function table.seq(xs)
@@ -211,7 +211,7 @@ function table.splice(xs,pos)
       table.insert(zs,v)
     end
   end
-  return ys, zs
+  return ys,zs
 end
 
 function table.keys(xs)
@@ -379,8 +379,8 @@ function tree.get(tr,k)
     rem[leaf]=nil
     return node[leaf],rem,tr
   else
-    local _, ys = table.splice(k,1)
-    return tree.get(tr[k[1]], ys)
+    local _,ys = table.splice(k,1)
+    return tree.get(tr[k[1]],ys)
   end
 end
 
@@ -391,7 +391,7 @@ function tree.set(tr,k,v)
   elseif #k == 1 then
     tr[k[1]]=table.nmerge(tr[k[1]] or {},{[leaf]=v})
   else
-    local _, ys = table.splice(k,1)
+    local _,ys = table.splice(k,1)
     tr[k[1]]=tree.set(tr[k[1]],ys,v)
   end
   return tr
