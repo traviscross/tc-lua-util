@@ -203,7 +203,7 @@ function table.nsort(xs,comp,key)
 end
 
 function table.splice(xs,pos)
-  local ys,zs,i={},{}
+  local ys,zs={},{}
   for i,v in ipairs(xs) do
     if i<=pos then
       table.insert(ys,v)
